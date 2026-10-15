@@ -121,8 +121,14 @@
       <span class="hint-text">💡 Click any card to read their personalized note!</span>
     </div>
 
+    <!-- Loading Spinner -->
+    <div class="loading-state-box" *ngIf="isLoading">
+      <div class="cosmic-spinner"></div>
+      <p>Loading heartfelt memories & teammates...</p>
+    </div>
+
     <!-- Cards Grid -->
-    <div class="team-grid" *ngIf="filteredMembers.length > 0; else noResults">
+    <div class="team-grid" *ngIf="!isLoading && filteredMembers.length > 0; else noResults">
       
       <div 
         *ngFor="let member of filteredMembers; let i = index" 
@@ -204,7 +210,7 @@
 
     <!-- No Results Fallback -->
     <ng-template #noResults>
-      <div class="no-results-box">
+      <div class="no-results-box" *ngIf="!isLoading">
         <div class="no-results-icon">🔍</div>
         <h3>No team member found</h3>
         <p>No teammates matched "{{ searchQuery }}". Try clearing your search or filter.</p>
