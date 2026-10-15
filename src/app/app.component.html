@@ -105,30 +105,9 @@
         <button 
           type="button" 
           class="filter-pill" 
-          [class.active]="activeFilter === 'design'" 
-          (click)="setFilter('design')">
-          🎨 Design & UX
-        </button>
-        <button 
-          type="button" 
-          class="filter-pill" 
-          [class.active]="activeFilter === 'product'" 
-          (click)="setFilter('product')">
-          🧭 Product
-        </button>
-        <button 
-          type="button" 
-          class="filter-pill" 
           [class.active]="activeFilter === 'qa'" 
           (click)="setFilter('qa')">
           🛡️ QA & Testing
-        </button>
-        <button 
-          type="button" 
-          class="filter-pill" 
-          [class.active]="activeFilter === 'operations'" 
-          (click)="setFilter('operations')">
-          ☁️ DevOps & Cloud
         </button>
       </div>
 
@@ -148,7 +127,7 @@
       <div 
         *ngFor="let member of filteredMembers; let i = index" 
         class="team-card" 
-        [style.--card-gradient]="member.gradient"
+        [style.--card-gradient]="member.gradient || 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)'"
         [style.animation-delay]="i * 0.08 + 's'"
         (click)="openMemberModal(member)">
         
@@ -171,7 +150,7 @@
             <div 
               *ngIf="!member.avatarUrl" 
               class="avatar-initials" 
-              [style.background]="member.gradient">
+              [style.background]="member.gradient || 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)'">
               {{ member.avatarInitials }}
             </div>
             <div class="avatar-status-ring"></div>
@@ -184,7 +163,7 @@
             (click)="likeMember(member, $event)" 
             title="Send love / appreciation">
             <span class="heart-icon">❤️</span>
-            <span class="like-count">{{ member.likesCount }}</span>
+            <span class="like-count">{{ member.likesCount || 0 }}</span>
           </button>
         </div>
 
@@ -196,7 +175,7 @@
           </div>
 
           <!-- Nickname / Fun Badge -->
-          <div class="member-badge-pill">
+          <div class="member-badge-pill" *ngIf="member.badge">
             <span>{{ member.badge }}</span>
           </div>
 
@@ -287,7 +266,7 @@
         <div class="modal-avatar-wrapper">
           <div 
             class="modal-avatar" 
-            [style.background]="selectedMember.gradient">
+            [style.background]="selectedMember.gradient || 'linear-gradient(135deg, #a855f7 0%, #3b82f6 100%)'">
             {{ selectedMember.avatarInitials }}
           </div>
           <div class="modal-avatar-glow"></div>
@@ -296,12 +275,12 @@
         <div class="modal-profile-info">
           <div class="modal-name-row">
             <h2 class="modal-name">{{ selectedMember.name }}</h2>
-            <span class="modal-badge-pill">{{ selectedMember.badge }}</span>
+            <span class="modal-badge-pill" *ngIf="selectedMember.badge">{{ selectedMember.badge }}</span>
           </div>
           <div class="modal-role-row">
             <span class="modal-role">{{ selectedMember.role }}</span>
-            <span class="modal-dot">•</span>
-            <span class="modal-nickname">{{ selectedMember.nickname }}</span>
+            <span class="modal-dot" *ngIf="selectedMember.nickname">•</span>
+            <span class="modal-nickname" *ngIf="selectedMember.nickname">{{ selectedMember.nickname }}</span>
           </div>
         </div>
       </div>
@@ -318,10 +297,10 @@
         </div>
 
         <!-- Special Highlights Grid -->
-        <div class="highlights-grid">
+        <div class="highlights-grid" *ngIf="selectedMember.bestMemory || selectedMember.specialSkill">
           
           <!-- Best Memory Box -->
-          <div class="highlight-card memory-card">
+          <div class="highlight-card memory-card" *ngIf="selectedMember.bestMemory">
             <div class="highlight-header">
               <span class="highlight-icon">🌟</span>
               <span class="highlight-title">Best Memory with You</span>
@@ -332,7 +311,7 @@
           </div>
 
           <!-- Superpower Box -->
-          <div class="highlight-card skill-card">
+          <div class="highlight-card skill-card" *ngIf="selectedMember.specialSkill">
             <div class="highlight-header">
               <span class="highlight-icon">⚡</span>
               <span class="highlight-title">Superpower</span>
@@ -345,7 +324,7 @@
         </div>
 
         <!-- Parting Wish Box -->
-        <div class="wish-card">
+        <div class="wish-card" *ngIf="selectedMember.partingWish">
           <div class="wish-header">
             <span class="wish-icon">🚀</span>
             <span class="wish-title">My Parting Wish For You</span>
@@ -356,7 +335,7 @@
         </div>
 
         <!-- Tags Row -->
-        <div class="modal-tags-row">
+        <div class="modal-tags-row" *ngIf="selectedMember.tags && selectedMember.tags.length > 0">
           <span *ngFor="let tag of selectedMember.tags" class="modal-tag">
             {{ tag }}
           </span>
@@ -373,7 +352,7 @@
           (click)="likeMember(selectedMember, $event)" 
           [class.liked]="isLikedInModal">
           <span class="like-anim-heart">❤️</span>
-          <span>Send Appreciation ({{ selectedMember.likesCount }})</span>
+          <span>Send Appreciation ({{ selectedMember.likesCount || 0 }})</span>
         </button>
 
         <div class="footer-keyboard-hint">
