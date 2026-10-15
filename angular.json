@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/thank-you-team",
+            "outputPath": "docs/thank-you-team",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
